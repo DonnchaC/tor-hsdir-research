@@ -417,6 +417,41 @@ rend_desc_v2_is_parsable(rend_encoded_v2_service_descriptor_t *desc)
   return (res >= 0);
 }
 
+/** Attempt to parse the given <b>desc_str</b> and provide the base32 encoded service_id return true if this
+ * succeeds, false otherwise. */
+int
+rend_desc_v2_parse_service_id(const char *desc, char *out)
+{
+  rend_service_descriptor_t *parsed = NULL;
+  char desc_id[DIGEST_LEN];
+  char *intro_content = NULL;
+  size_t intro_size;
+  size_t encoded_size;
+  const char *next_desc;;
+  int retval = 0;
+
+  /* Parse the descriptor. */
+  if (rend_parse_v2_service_descriptor(&parsed, desc_id, &intro_content,
+                                       &intro_size, &encoded_size,
+                                       &next_desc, desc) < 0) {
+    log_warn(LD_REND, "Could not parse descriptor.");
+    retval = -2;
+    goto err;
+  }
+  /* Compute service ID from public key. */
+  if (rend_get_service_id(parsed->pk, out)<0) {
+    log_warn(LD_REND, "Couldn't compute service ID.");
+    retval = -2;
+    goto err;
+  }
+  
+  err:
+    rend_service_descriptor_free(parsed);
+    tor_free(intro_content);
+    return retval;
+}
+
+
 /** Free the storage held by an encoded v2 service descriptor. */
 void
 rend_encoded_v2_service_descriptor_free(
@@ -1032,10 +1067,6 @@ rend_cache_store(const char *desc, size_t desc_len, int published,
   tor_assert(rend_cache);
   parsed = rend_parse_service_descriptor(desc,desc_len);
 
-  // Log the recieved hidden service descriptor
-  log_notice(LD_GENERAL, "Recieved a new hidden service descriptor: %s", 
-	safe_str_client(service_id));
-
   if (!parsed) {
     log_warn(LD_PROTOCOL,"Couldn't parse service descriptor.");
     return -2;
@@ -1045,6 +1076,11 @@ rend_cache_store(const char *desc, size_t desc_len, int published,
     rend_service_descriptor_free(parsed);
     return -2;
   }
+  
+  /* Log the received hidden service descriptor */
+  log_notice(LD_REND, "Got a new v0 hidden service descriptor to store, SERVICE_ID '%s'", 
+	  safe_str_client(query));
+	  
   if ((service_id != NULL) && strcmp(query, service_id)) {
     log_warn(LD_REND, "Received service descriptor for service ID %s; "
              "expected descriptor for service ID %s.",
@@ -1125,6 +1161,7 @@ rend_cache_store_v2_desc_as_dir(const char *desc)
 {
   rend_service_descriptor_t *parsed;
   char desc_id[DIGEST_LEN];
+  char service_id[REND_SERVICE_ID_LEN_BASE32+1];
   char *intro_content;
   size_t intro_size;
   size_t encoded_size;
@@ -1151,6 +1188,14 @@ rend_cache_store_v2_desc_as_dir(const char *desc)
     /* For pretty log statements. */
     base32_encode(desc_id_base32, sizeof(desc_id_base32),
                   desc_id, DIGEST_LEN);
+                  
+    /* Log the received hidden service descriptor */            
+    if (rend_get_service_id(parsed->pk, service_id)<0) {
+      log_warn(LD_BUG,"Couldn't compute service ID.");
+    }
+    log_notice(LD_REND, "Got a new v2 hidden service descriptor to store, DESC_ID '%s', SERVICE_ID '%s'", 
+	            safe_str_client(desc_id_base32), safe_str_client(service_id));
+	  
     /* Is desc ID in the range that we are (directly or indirectly) responsible
      * for? */
     if (!hid_serv_responsible_for_desc_id(desc_id)) {

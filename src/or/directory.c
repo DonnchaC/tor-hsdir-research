@@ -3228,12 +3228,23 @@ directory_handle_command_get(dir_connection_t *conn, const char *headers,
        !strcmpstart(url,"/tor/rendezvous2/")) {
     /* Handle v2 rendezvous descriptor fetch request. */
     const char *descp;
+    char service_id[REND_SERVICE_ID_LEN_BASE32+1];
     const char *query = url + strlen("/tor/rendezvous2/");
     if (strlen(query) == REND_DESC_ID_V2_LEN_BASE32) {
       log_info(LD_REND, "Got a v2 rendezvous descriptor request for ID '%s'",
                safe_str(query));
+       
+      /* Log the request received from the client */
+      log_notice(LD_REND, "Got a client request for v2 HidServ DESC_ID '%s'", 
+               safe_str(query));
+	
       switch (rend_cache_lookup_v2_desc_as_dir(query, &descp)) {
         case 1: /* valid */
+          /* The requested desc_id was found in the rend_cache, determine the requested service_id */
+          if(rend_desc_v2_parse_service_id(descp, service_id)>=0) {
+            log_notice(LD_REND, "Found requested v2 HidServ descriptor, DESC_ID '%s', SERVICE_ID '%s'", 
+                      safe_str_client(query), safe_str_client(service_id));  
+          }     
           write_http_response_header(conn, strlen(descp), 0, 0);
           connection_write_to_buf(descp, strlen(descp), TO_CONN(conn));
           break;
@@ -3257,6 +3268,11 @@ directory_handle_command_get(dir_connection_t *conn, const char *headers,
     const char *query = url+strlen("/tor/rendezvous/");
 
     log_info(LD_REND, "Handling rendezvous descriptor get");
+    
+    /* Log the request received from the client */
+    log_notice(LD_REND, "Got a client request for v0 HidServ SERVICE_ID '%s'", 
+             safe_str(query));
+               
     switch (rend_cache_lookup_desc(query, 0, &descp, &desc_len)) {
       case 1: /* valid */
         write_http_response_header_impl(conn, desc_len,
