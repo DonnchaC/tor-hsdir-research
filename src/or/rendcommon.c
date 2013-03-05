@@ -1031,6 +1031,11 @@ rend_cache_store(const char *desc, size_t desc_len, int published,
   time_t now;
   tor_assert(rend_cache);
   parsed = rend_parse_service_descriptor(desc,desc_len);
+
+  // Log the recieved hidden service descriptor
+  log_notice(LD_GENERAL, "Recieved a new hidden service descriptor: %s", 
+	safe_str_client(service_id));
+
   if (!parsed) {
     log_warn(LD_PROTOCOL,"Couldn't parse service descriptor.");
     return -2;
