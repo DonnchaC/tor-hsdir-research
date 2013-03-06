@@ -18,11 +18,14 @@ https://gitweb.torproject.org/torspec.git/blob/HEAD:/rend-spec.txt
 Tor hidden service desc_id's are deterministic and if there is no 'descriptor cookie' they can be determined 
 by anybody for an arbitrary point in time. In fact this is required as this is the mechanism by which clients request
 hidden service descriptors.
-  descriptor-id = H(permanent-id | H(time-period | descriptor-cookie | replica))
+
+    descriptor-id = H(permanent-id | H(time-period | descriptor-cookie | replica))
+
 *decriptor-cookie* is typically empty. *replica* is an integer, usual from 0-1 which indicated which set of 
 responsible HidServ directories this descriptor is for and *permanent-id* is derived from the service public key.
 
-  time-period = (current-time + permanent-id-byte * 86400 / 256) / 86400
+    time-period = (current-time + permanent-id-byte * 86400 / 256) / 86400
+
 The *time-period* changes approximatly every 24 hours.
 
 ### 1. Statistical and Traffic Analysis of Tor Hidden Services
@@ -38,3 +41,7 @@ The technique above could be expanded to try and generate keys and *router_id*'s
 responsible HidServ directories. These attacker controlled HidServ directories could then return no date or incorrect
 responses to clients locking to connect to the attacked hidden services. As there are no other sources for this 
 hidden service descriptor the hidden service would be effectivly inaccessbile, DoS'd.
+
+I estimated only: 6 (Responsible Directories) * 2 (24 hour HidServDir Delay)) = 12 Tor instances would be required.
+It is possible to have two Tor nodes per IP, therefore it should be possible to perform a full DoS of a hidden service
+with just 6 static IP's.
