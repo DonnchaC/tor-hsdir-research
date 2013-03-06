@@ -36,7 +36,7 @@ one of the HidServ directories for the selected hidden service.
 For the next 24 hours until a new desc_id is created, this HidServ directory should received approximatly 1/8 of all
 client requests for this service, providing a good estimate of hidden service usage.
   
-### 2. Potential DoS Attacks on Tor Hidden Services
+### 2. Potential DoS Attacks on Tor Hidden Services (Doesn't look feasible)
 The technique above could be expanded to try and generate keys and *router_id*'s the would be selected for all 6
 responsible HidServ directories. These attacker controlled HidServ directories could then return no date or incorrect
 responses to clients locking to connect to the attacked hidden services. As there are no other sources for this 
@@ -45,3 +45,8 @@ hidden service descriptor the hidden service would be effectivly inaccessbile, D
 I estimated only: 6 (Responsible Directories) * 2 (24 hour HidServDir Delay)) = 12 Tor instances would be required.
 It is possible to have two Tor nodes per IP, therefore it should be possible to perform a full DoS of a hidden service
 with just 6 static IP's.
+
+--
+
+Tor router_id is actually based on a hash of the OR descriptor which is published to the directory authorities. 
+- router_get_router_hash() in routerparse.c :(
