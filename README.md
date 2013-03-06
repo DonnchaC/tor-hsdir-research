@@ -33,7 +33,7 @@ one of the HidServ directories for the selected hidden service.
 For the next 24 hours until a new desc_id is created, this HidServ directory should received approximatly 1/8 of all
 client requests for this service, providing a good estimate of hidden service usage.
   
-### Potential DoS Attacks on Tor Hidden Services
+### 2. Potential DoS Attacks on Tor Hidden Services
 The technique above could be expanded to try and generate keys and *router_id*'s the would be selected for all 6
 responsible HidServ directories. These attacker controlled HidServ directories could then return no date or incorrect
 responses to clients locking to connect to the attacked hidden services. As there are no other sources for this 
