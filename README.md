@@ -50,3 +50,15 @@ with just 6 static IP's.
 
 Tor router_id is actually based on a hash of the OR descriptor which is published to the directory authorities. 
 - router_get_router_hash() in routerparse.c :(
+
+### First results
+
+commit #4e48bb1 works perfectly for logging requested hidden service descriptors and published descriptors. Unfortunately
+worst fears of Tor hidden services were realized. First logged hidden service was a private tor marketplace, second site
+was a forgotten web page from 2009, and the third site contain child abuse images. Pretty disgustings.
+
+Definitely huge potential to scan and categorize all hidden services and check their purpose here. Would be relatively
+straightforward to identify almost all child abuse sites and begin infiltrating them. Would work for one generation
+until sites start using client authentication and authentication cookies.
+
+Shouldn't work drunk, can't remove committed spelling mistakes :)
