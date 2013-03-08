@@ -1805,6 +1805,11 @@ router_rebuild_descriptor(int force)
     routerinfo_free(ri);
     return -1;
   }
+  /* Log this routers identity_digest. Determines which HidServ descriptors will
+     be published to this router */
+  log_notice(LD_REND, "Current router identity_digest is '%s'", 
+                     safe_str(ri->cache_info.identity_digest));
+
   get_platform_str(platform, sizeof(platform));
   ri->platform = tor_strdup(platform);
 
