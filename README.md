@@ -48,8 +48,10 @@ with just 6 static IP's.
 
 --
 
-Tor router_id is actually based on a hash of the OR descriptor which is published to the directory authorities. 
-- router_get_router_hash() in routerparse.c :(
+Still not certain what the OR *identity_digest* identifying a OR in the DHT is. I think it is based the sha1 hash of the OR's
+*server_identity* public key. This *server_identity* key is loaded from the *secret_id_key* file in Tor's key directory
+and it should never change, unless we are manipulating it. The *identity digest* code in router.c 
+(https://github.com/DonnchaC/tor/blob/master/src/or/router.c#L1803-L1808) 
 
 ### First results
 
@@ -58,7 +60,7 @@ worst fears of Tor hidden services were realized. First logged hidden service wa
 was a forgotten web page from 2009, and the third site contain child abuse images. Pretty disgustings.
 
 Definitely huge potential to scan and categorize all hidden services and check their purpose here. Would be relatively
-straightforward to identify almost all child abuse sites and begin infiltrating them. Would work for one generation
+straightforward to identify almost all child abuse sites and for LEO to begin infiltrating them. Would work for one generation
 until sites start using client authentication and authentication cookies.
 
 Shouldn't work drunk, can't remove committed spelling mistakes :)
