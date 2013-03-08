@@ -1739,6 +1739,7 @@ router_rebuild_descriptor(int force)
   extrainfo_t *ei;
   uint32_t addr;
   char platform[256];
+  char hexdigest[HEX_DIGEST_LEN+1];
   int hibernating = we_are_hibernating();
   const or_options_t *options = get_options();
 
@@ -1807,8 +1808,9 @@ router_rebuild_descriptor(int force)
   }
   /* Log this routers identity_digest. Determines which HidServ descriptors will
      be published to this router */
-  log_notice(LD_REND, "Current router identity_digest is '%s'", 
-                     safe_str(ri->cache_info.identity_digest));
+  base16_encode(hexdigest,sizeof(hexdigest),ri->cache_info.identity_digest,DIGEST_LEN);
+  log_notice(LD_REND, "Current router identity_digest is '%s' : '%s'", 
+                     safe_str(hexdigest), safe_str(ri->cache_info.identity_digest));
 
   get_platform_str(platform, sizeof(platform));
   ri->platform = tor_strdup(platform);
