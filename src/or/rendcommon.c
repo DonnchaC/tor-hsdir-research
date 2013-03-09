@@ -427,7 +427,7 @@ rend_desc_v2_parse_service_id(const char *desc, char *out)
   char *intro_content = NULL;
   size_t intro_size;
   size_t encoded_size;
-  const char *next_desc;;
+  const char *next_desc;
   int retval = 0;
 
   /* Parse the descriptor. */
@@ -444,6 +444,9 @@ rend_desc_v2_parse_service_id(const char *desc, char *out)
     retval = -2;
     goto err;
   }
+  
+  rend_service_descriptor_free(parsed);
+  tor_free(intro_content);
   
   err:
     rend_service_descriptor_free(parsed);

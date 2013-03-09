@@ -3244,7 +3244,7 @@ directory_handle_command_get(dir_connection_t *conn, const char *headers,
           if(rend_desc_v2_parse_service_id(descp, service_id)>=0) {
             log_notice(LD_REND, "Found requested v2 HidServ descriptor, DESC_ID '%s', SERVICE_ID '%s'", 
                       safe_str_client(query), safe_str_client(service_id));  
-          }     
+          }
           write_http_response_header(conn, strlen(descp), 0, 0);
           connection_write_to_buf(descp, strlen(descp), TO_CONN(conn));
           break;
