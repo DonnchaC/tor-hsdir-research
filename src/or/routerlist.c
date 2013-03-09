@@ -5041,6 +5041,9 @@ hid_serv_responsible_for_desc_id(const char *query)
     return 0; /* This is redundant, but let's be paranoid. */
   my_id = me->cache_info.identity_digest;
   responsible = smartlist_new();
+  /* Output info about current router and if it's responsible for current desc_id */
+  log_notice(LD_REND, "Checking if responsible, identity digest '%s', desc_id '%s'", 
+	          safe_str_client(my_id), safe_str_client(query));
   if (hid_serv_get_responsible_directories(responsible, query) < 0) {
     smartlist_free(responsible);
     return 0;
