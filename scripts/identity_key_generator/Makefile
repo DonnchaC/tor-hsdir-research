@@ -26,17 +26,17 @@ OBJS_DBG:=src/math.dbg.o src/error.dbg.o src/linux.dbg.o src/print.dbg.o src/thr
 
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) -pthread $^ -o shallot $(LIBS)
+	$(CC) $(CFLAGS) -pthread $^ -o id_key_gen $(LIBS)
 
 debug: $(OBJS_DBG)
-	$(CC)  $(DEBUG_FLAGS) $(CFLAGS) -pthread $^ -o shallot $(LIBS)
+	$(CC)  $(DEBUG_FLAGS) $(CFLAGS) -pthread $^ -o id_key_gen $(LIBS)
 
 clean:
-	$(RM)  shallot src/*.o
+	$(RM)  id_key_gen src/*.o
 install:
-	$(CP) shallot /usr/bin/
+	$(CP) id_key_gne /usr/bin/
 uninstall:
-	$(RM) /usr/bin/shallot
+	$(RM) /usr/bin/id_key_gen
 
 
 

@@ -29,8 +29,6 @@
 #define DESC_ID_V2_LEN_BASE32 32
 #define BASE32_ONIONLEN 32
 #define BASE32_ALPHABET "abcdefghijklmnopqrstuvwxyz234567"
-
-#define PRINT_ONION_STR "Found matching desc_id after %"PRIi64" tries: %s"
 #define PRINT_ONION_MAX 79
 
 #ifdef LINUX_PORT

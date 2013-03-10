@@ -39,20 +39,15 @@ void base32_onion(char *dst, unsigned char *src) { // base32-encode hash
 }
 
 void print_onion(char *onion) { // pretty-print hash
-  uint8_t i;
   char *s;
   #ifdef GENERIC
   s = malloc(PRINT_ONION_MAX);
-  snprintf(s, PRINT_ONION_MAX, PRINT_ONION_STR, loop, onion);
+  snprintf(s, PRINT_ONION_MAX, "%s", onion);
   #else
-  if (asprintf(&s, PRINT_ONION_STR, loop, onion) == -1)
+  if (asprintf(&s, "%s", onion) == -1)
 		error(X_OUT_OF_MEMORY);
   #endif
-  for(i=0; i<strlen(s); i++)
-    printf("-"); // TODO: use fputc()?
-  printf("\n%s\n", s);
-  for(i=0; i<strlen(s); i++)
-    printf("-"); // TODO: use fputc()?
+  printf("%s", s);
   printf("\n");
   free(s);
 }
