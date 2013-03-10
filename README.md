@@ -28,6 +28,8 @@ responsible HidServ directories this descriptor is for and *permanent-id* is der
 
 The *time-period* changes approximatly every 24 hours.
 
+The HidServ directory *identity_digest* should be before the *desc_id* in a descending lists of all HidServ directories
+
 ### 1. Statistical and Traffic Analysis of Tor Hidden Services
 It should be possible to determine more than 24 hours in advanced what a public hidden service desc_id will be. 
 It should then be trivial to bruteforce a router key which would have an *router_id* the right range to be selected as 
