@@ -14,10 +14,8 @@ import base64
 with open('/var/lib/tor/cached-consensus', 'rb') as consensus_file:
   # Processes the routers as we read them in. The routers refer to a document
   # with an unset 'routers' attribute.
-  count = 0
   for router in parse_file(consensus_file, 'network-status-consensus-3 1.0', document_handler = DocumentHandler.ENTRIES):
     if "HSDir" in router.flags:
       fingerprint_base32 =  base64.b32encode(router.fingerprint.decode("hex"))
       print "'%s','%s','%s','%s'" % (fingerprint_base32, router.nickname, router.fingerprint, router.address)
-      count += 1
 
