@@ -15,6 +15,10 @@
 # Description:       Start The Onion Router, a TCP overlay
 #                    network client that provides anonymous
 #                    transport.
+
+# Obtained from http://permalink.gmane.org/gmane.network.tor.relay/392
+# Originally posted by Teun Nijssen (teun.nigseen@uvt.nl)
+
 ### END INIT INFO
 
 set -e
