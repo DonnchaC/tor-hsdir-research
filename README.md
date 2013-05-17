@@ -1,18 +1,25 @@
 # Tor Hidden Service (DHT) Research
 ===
 
-Modified version of Tor and related scripts for investigating attacks on HidServ DHT.
+This repository contains a modified version of the Tor client and related scripts for investigating attacks
+on the Tor hidden service distribute hash table.
+
+The raw data I captured is is the *data* directory and other scripts and tools are in the *scripts* directory.
 
 Currently the following data is being logged to Tor's notice logs:
 * When HS directory receives a v2 hidden service descriptor - rend_cache_store_v2_desc_as_dir() - rendcommon.c
 * When HS directory receives a client request for a v2 hidden service descriptor - directory.c - Line 3245
-* The requested service_id is stored when a client requests a desc_id we have stored - directory.c
+* The requested *service_id* is stored when a client requests a desc_id we have stored in our HS descriptor list - directory.c
 
-There is some logging done for v0 descriptors but this is not needed as v0 requests are only published to the
-original directory authority servers. Only v2 descriptor logging is need. 
-https://gitweb.torproject.org/torspec.git/blob/HEAD:/rend-spec.txt
+Please check out my [blog post](http://donncha.is/2013/05/trawling-tor-hidden-services/) for more information.
 
-## Other Ideas
+==
+## Other information
+
+The information below is a working summary of this research as I was trying to figure things out. 
+Be advised there might be mistakes here, but I'll leave it up as a summary
+
+--
 
 ### Background
 Tor hidden service desc_id's are deterministic and if there is no 'descriptor cookie' anyone can determined

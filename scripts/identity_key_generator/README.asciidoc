@@ -11,6 +11,9 @@ Note: I have a feeling this script has a bug and is not generating correct outpu
 You should confirm the generated identiy_key from the private key by some other means such
 as openssl.
 
+	openssl rsa -in secret_id_key -pubout -outform DER | tail -c +23 | sha1sum | head -c 40 | python -c "import base64,sys; print base64.b32encode(sys.stdin.readline().strip('\n').decode('hex')).lower()"
+
+
 Installation
 ------------
 	$ ./configure && make
