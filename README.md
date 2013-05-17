@@ -11,6 +11,9 @@ Currently the following data is being logged to Tor's notice logs:
 * When HS directory receives a client request for a v2 hidden service descriptor - directory.c - Line 3245
 * The requested *service_id* is stored when a client requests a desc_id we have stored in our HS descriptor list - directory.c
 
+All collected data is located in [/data](https://github.com/DonnchaC/tor/tree/master/data) and other scripts
+I used and referance are in [/scripts](https://github.com/DonnchaC/tor/tree/master/scripts)
+
 Please check out my [blog post](http://donncha.is/2013/05/trawling-tor-hidden-services/) for more information.
 
 ==
