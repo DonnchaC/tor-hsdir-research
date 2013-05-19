@@ -8,11 +8,11 @@ first copy and probably has bugs.
 """
 
 from time import time
-from base64 import b32encode, b32decode, b16decode
+from base64 import b32encode, b32decode
 from hashlib import sha1
 from struct import pack, unpack
 from stem.descriptor import parse_file, DocumentHandler
-from stem.descriptor.router_status_entry import RouterStatusEntryV3, _decode_fingerprint
+from stem.descriptor.router_status_entry import RouterStatusEntryV3
 import argparse
 from bisect import bisect_left
 import urllib
