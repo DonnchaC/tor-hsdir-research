@@ -27,7 +27,7 @@ Be advised there might be mistakes here, but I'll leave it up as a summary
 ### Background
 Tor hidden service desc_id's are deterministic and if there is no 'descriptor cookie' anyone can determined
 the desc_id's for a HS at an arbitrary point in time. In fact this is required as this is the mechanism by
-which OP's request hidden service descriptors from the HS directories. They are calulated as follows:
+which OP's request hidden service descriptors from the HS directories. They are calculated as follows:
 
     descriptor-id = H(permanent-id | H(time-period | descriptor-cookie | replica))
 
